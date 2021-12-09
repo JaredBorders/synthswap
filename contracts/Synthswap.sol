@@ -16,7 +16,13 @@ contract SynthSwap is ISynthSwap {
     event SwapInto(address indexed from, uint amountReceived);
     event SwapOutOf(address indexed from, uint amountReceived);
     
-    constructor (address _synthetix, address _sUSD, address _volumeRewards, address _aggregationRouterV3, address _addressResolver) {
+    constructor (
+        address _synthetix, 
+        address _sUSD, 
+        address _volumeRewards, 
+        address _aggregationRouterV3, 
+        address _addressResolver
+    ) {
         synthetix = ISynthetix(_synthetix);
         sUSD = IERC20(_sUSD);
         volumeRewards = _volumeRewards;
@@ -24,11 +30,11 @@ contract SynthSwap is ISynthSwap {
         addressResolver = IAddressResolver(_addressResolver);
     }
 
+    /// @inheritdoc ISynthSwap
     function swapInto(
-        bytes calldata _data,
-        bytes32 destinationSynthCurrencyKey
+        bytes32 destinationSynthCurrencyKey,
+        bytes calldata _data
     ) external payable override returns (uint) {
-
         // Make sure to set destReceiver to this contract
         (bool success, bytes memory returnData) = aggregationRouterV3.delegatecall(_data);
         require(success, _getRevertMsg(returnData));
@@ -36,23 +42,23 @@ contract SynthSwap is ISynthSwap {
         
         sUSD.approve(address(synthetix), sUSDAmountOut);
         uint amountReceived = synthetix.exchangeWithTrackingForInitiator(
-            'sUSD', // hardcode source currency key
-            sUSDAmountOut, //source amount
+            'sUSD', // source currency key
+            sUSDAmountOut, // source amount
             destinationSynthCurrencyKey,
             volumeRewards, 
-            'KWENTA' //tracking code
+            'KWENTA' // tracking code
         );
         
         emit SwapInto(msg.sender, amountReceived);
         return amountReceived;
     }
 
+    /// @inheritdoc ISynthSwap
     function swapOutOf(
         bytes32 sourceSynthCurrencyKey,
         uint sourceAmount, // Make sure synthetix is approved to use this amount
         bytes calldata _data
     ) external override returns (uint) {
-
         IERC20 sourceSynth = IERC20(addressResolver.getSynth(sourceSynthCurrencyKey));
         sourceSynth.transferFrom(msg.sender, address(this), sourceAmount);
         
@@ -61,9 +67,9 @@ contract SynthSwap is ISynthSwap {
         uint sUSDAmountOut = synthetix.exchangeWithTracking(
             sourceSynthCurrencyKey, 
             sourceAmount, 
-            'sUSD',
+            'sUSD', // destination currency key
             volumeRewards, 
-            'KWENTA' //tracking code
+            'KWENTA' // tracking code
         );
 
         sUSD.approve(address(aggregationRouterV3), sUSDAmountOut);
@@ -77,13 +83,15 @@ contract SynthSwap is ISynthSwap {
     }
 
     function _getRevertMsg(bytes memory _returnData) internal pure returns (string memory) {
-        // If the _res length is less than 68, then the transaction failed silently (without a revert message)
+        // If the _res length is less than 68, then the transaction failed 
+        // silently (without a revert message)
         if (_returnData.length < 68) return 'Transaction reverted silently';
 
         assembly {
-            // Slice the sighash.
+            // Slice the sighash
             _returnData := add(_returnData, 0x04)
         }
-        return abi.decode(_returnData, (string)); // All that remains is the revert string
+        // All that remains is the revert string
+        return abi.decode(_returnData, (string));
     }
 }

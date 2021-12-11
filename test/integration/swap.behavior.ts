@@ -5,17 +5,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // constructor variables
-const SYNTHETIX_PROXY = "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F"; // ProxyERC20
-const SUSD_PROXY = "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51"; // ProxyERC20sUSD
+const SYNTHETIX_PROXY = "0x8700dAec35aF8Ff88c16BdF0418774CB3D7599B4"; // ProxyERC20
+const SUSD_PROXY = "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9"; // ProxyERC20sUSD
 const VOLUME_REWARDS = ethers.constants.AddressZero;
-const AGGREGATION_ROUTER_V3 = "0x11111112542d85b3ef69ae05771c2dccff4faa26";
-const ADDRESS_RESOLVER = "0x823bE81bbF96BEc0e25CA13170F5AaCb5B79ba83"
+const AGGREGATION_ROUTER_V3 = "0x11111112542D85B3EF69AE05771c2dCCff4fAa26";
+const ADDRESS_RESOLVER = "0x95A6a3f44a70172E7d50a9e28c85Dfd712756B8C"
 
 const TEST_ADDRESS = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"; // Make sure it has ETH
-const SETH_PROXY = "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb";
+const SETH_PROXY = "0xE405de8F52ba7559f9df3C368500B6E6ae6Cee49";
 const TRANSACTION_PAYLOAD_1INCH =
     "0x7c02520000000000000000000000000027239549dd40e1d60f5b80b0c4196923745b1fd200000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000180000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee00000000000000000000000057ab1ec28d129707052df4df418d58a2d46d5f5100000000000000000000000027239549dd40e1d60f5b80b0c4196923745b1fd2000000000000000000000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000000000000000000000000000000000000000016345785d8a00000000000000000000000000000000000000000000000000148b78263105efae3f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000024000000000000000000000000000000000000000000000000000000000000003a0000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016345785d8a000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000004d0e30db000000000000000000000000000000000000000000000000000000000000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000f80758ab42c3b07da84053fd88804bcb6baa4b5c000000000000000000000000000000000000000000000000016345785d8a000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000a4b757fed6000000000000000000000000f80758ab42c3b07da84053fd88804bcb6baa4b5c000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc200000000000000000000000057ab1ec28d129707052df4df418d58a2d46d5f510000000000000000002dc6c027239549dd40e1d60f5b80b0c4196923745b1fd200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000184b3af37c00000000000000000000000000000000000000000000000000000000000000080800000000000000000000000000000000000000000000000000000000000002400000000000000000000000057ab1ec28d129707052df4df418d58a2d46d5f51000000000000000000000000000000010000000000000000000000000000000100000000000000000000000057ab1ec28d129707052df4df418d58a2d46d5f510000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 const SETH_BYTES32 = "0x7345544800000000000000000000000000000000000000000000000000000000";
+const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
 
 describe("Integration: Test Synthswap.sol", function () {
     before(async () => {
@@ -25,7 +26,7 @@ describe("Integration: Test Synthswap.sol", function () {
                 {
                     forking: {
                         jsonRpcUrl: process.env.ARCHIVE_NODE_URL,
-                        blockNumber: 13768323,
+                        blockNumber: 1025934,
                     },
                 },
             ],
@@ -35,9 +36,15 @@ describe("Integration: Test Synthswap.sol", function () {
             method: "hardhat_impersonateAccount",
             params: [TEST_ADDRESS],
         });
+
+        await network.provider.send("hardhat_setBalance", [
+            TEST_ADDRESS,
+            "0xde0b6b3a7640000", // 1 ETH
+        ]);
     });
 
-    it("Test swap out of ETH into sETH", async () => {
+    it("Test swap ETH into sETH", async () => {
+        // ETH -(1inchAggregator)-> sUSD -(Synthetix)-> sETH
         const SynthSwap = await ethers.getContractFactory("SynthSwap");
         const synthswap = await SynthSwap.deploy(
             SYNTHETIX_PROXY,
@@ -50,21 +57,20 @@ describe("Integration: Test Synthswap.sol", function () {
 
         const IERC20ABI = (await artifacts.readArtifact("IERC20")).abi;
         const mockProvider = waffle.provider;
-        const sETH = new ethers.Contract(SETH_PROXY, IERC20ABI, mockProvider);
-        
+        const signer = await ethers.getSigner(TEST_ADDRESS);
+
         // pre-swap balance
+        const sETH = new ethers.Contract(SETH_PROXY, IERC20ABI, mockProvider);
         const preBalance = await sETH.balanceOf(TEST_ADDRESS);
 
-        // Replace 0xaaa... placeholder from generated payload with deployed Synthswap address.
+        // Replace 0xaaa... placeholder from generated payload with deployed SynthSwap address.
         // This is because when generating the 1inch payload we need to specify a destination receiver address,
-        // which is our Synthswap contract, and this is not known ahead of time.
+        // which is our SynthSwap contract, and this is not known ahead of time.
         const TRANSACTION_PAYLOAD_1INCH_WITH_DEST_AS_CONTRACT =
             TRANSACTION_PAYLOAD_1INCH.replace(
                 /aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/g,
                 synthswap.address.substring(2) // Slice off "0x"
             );
-
-        const signer = await ethers.getSigner(TEST_ADDRESS);
 
         await synthswap
             .connect(signer) // Call swap from TEST_ADDRESS
@@ -79,6 +85,68 @@ describe("Integration: Test Synthswap.sol", function () {
         
         // post-swap balance
         const postBalance = await sETH.balanceOf(TEST_ADDRESS);
+
+        // Check ETH balance increased
+        expect(postBalance).to.be.above(preBalance);
+        expect(postBalance.toString()).to.equal("98802617794637161");
+    });
+
+    it("Test swap sETH to WETH", async () => {
+        // sETH -(Synthetix)-> sUSD -(1inchAggregator)-> WETH
+        const SynthSwap = await ethers.getContractFactory("SynthSwap");
+        const synthswap = await SynthSwap.deploy(
+            SYNTHETIX_PROXY,
+            SUSD_PROXY,
+            VOLUME_REWARDS,
+            AGGREGATION_ROUTER_V3,
+            ADDRESS_RESOLVER
+        );
+        await synthswap.deployed();
+
+        const IERC20ABI = (await artifacts.readArtifact("IERC20")).abi;
+        const mockProvider = waffle.provider;
+        const signer = await ethers.getSigner(TEST_ADDRESS);
+        
+        // pre-swap balance
+        const WETH = new ethers.Contract(WETH_ADDRESS, IERC20ABI, mockProvider);
+        const preBalance = await WETH.balanceOf(TEST_ADDRESS);
+
+        // Replace 0xaaa... placeholder from generated payload with deployed SynthSwap address.
+        // This is because when generating the 1inch payload we need to specify a destination receiver address,
+        // which is our SynthSwap contract, and this is not known ahead of time.
+        var payload =
+            TRANSACTION_PAYLOAD_1INCH.replace(
+                /aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/g,
+                synthswap.address.substring(2) // Slice off "0x"
+            );
+        
+        // to token address (i.e. sETH (prev was sUSD))
+        payload =
+            TRANSACTION_PAYLOAD_1INCH.replace(
+                /5e74c9036fb86bd7ecdcb084a0673efc32ea31cb/g,
+                SETH_PROXY.substring(2) // Slice off "0x"
+            );
+        
+        // from token address (i.e. sUSD (prev was ETH))
+        payload =
+            TRANSACTION_PAYLOAD_1INCH.replace(
+                /eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/g,
+                SUSD_PROXY.substring(2) // Slice off "0x"
+            );
+
+        await synthswap
+            .connect(signer) // Call swap from TEST_ADDRESS
+            .swapOutOf(
+                SETH_BYTES32,
+                1,
+                payload,
+                {
+                    gasLimit: 1000000, // If tx reverts increase gas limit
+                }
+            );
+        
+        // post-swap balance
+        const postBalance = await WETH.balanceOf(TEST_ADDRESS);
 
         // Check ETH balance increased
         expect(postBalance).to.be.above(preBalance);

@@ -18,9 +18,9 @@ contract SynthSwap is ISynthSwap {
     
     constructor (
         address _synthetix, 
-        address _sUSD, 
-        address _volumeRewards, 
-        address _aggregationRouterV3, 
+        address _sUSD,
+        address _volumeRewards,
+        address _aggregationRouterV3,
         address _addressResolver
     ) {
         synthetix = ISynthetix(_synthetix);
@@ -41,10 +41,11 @@ contract SynthSwap is ISynthSwap {
         (uint sUSDAmountOut,) = abi.decode(returnData, (uint, uint));
         
         sUSD.approve(address(synthetix), sUSDAmountOut);
+
         uint amountReceived = synthetix.exchangeWithTrackingForInitiator(
             'sUSD', // source currency key
             sUSDAmountOut, // source amount
-            destinationSynthCurrencyKey,
+            destinationSynthCurrencyKey, // destination currency key
             volumeRewards, 
             'KWENTA' // tracking code
         );
@@ -63,16 +64,18 @@ contract SynthSwap is ISynthSwap {
         sourceSynth.transferFrom(msg.sender, address(this), sourceAmount);
         
         sourceSynth.approve(address(synthetix), sourceAmount);
+
         // We don't use ForInitiator here because we want the sUSD returned to this contract
         uint sUSDAmountOut = synthetix.exchangeWithTracking(
-            sourceSynthCurrencyKey, 
-            sourceAmount, 
+            sourceSynthCurrencyKey, // source currency key
+            sourceAmount, // source amount
             'sUSD', // destination currency key
             volumeRewards, 
             'KWENTA' // tracking code
         );
 
         sUSD.approve(address(aggregationRouterV3), sUSDAmountOut);
+
         // Make sure to set destReceiver to caller
         (bool success, bytes memory returnData) = aggregationRouterV3.call(_data);
         require(success, _getRevertMsg(returnData));

@@ -11,7 +11,7 @@ contract SynthSwap is ISynthSwap {
     IERC20 sUSD;
     IAddressResolver addressResolver;
     address volumeRewards;
-    address aggregationRouterV3;
+    address aggregationRouterV4;
 
     event SwapInto(address indexed from, uint amountReceived);
     event SwapOutOf(address indexed from, uint amountReceived);
@@ -20,13 +20,13 @@ contract SynthSwap is ISynthSwap {
         address _synthetix, 
         address _sUSD,
         address _volumeRewards,
-        address _aggregationRouterV3,
+        address _aggregationRouterV4,
         address _addressResolver
     ) {
         synthetix = ISynthetix(_synthetix);
         sUSD = IERC20(_sUSD);
         volumeRewards = _volumeRewards;
-        aggregationRouterV3 = _aggregationRouterV3;
+        aggregationRouterV4 = _aggregationRouterV4;
         addressResolver = IAddressResolver(_addressResolver);
     }
 
@@ -36,7 +36,7 @@ contract SynthSwap is ISynthSwap {
         bytes calldata _data
     ) external payable override returns (uint) {
         // Make sure to set destReceiver to this contract
-        (bool success, bytes memory returnData) = aggregationRouterV3.delegatecall(_data);
+        (bool success, bytes memory returnData) = aggregationRouterV4.delegatecall(_data);
         require(success, _getRevertMsg(returnData));
         (uint sUSDAmountOut,) = abi.decode(returnData, (uint, uint));
         
@@ -74,10 +74,10 @@ contract SynthSwap is ISynthSwap {
             'KWENTA' // tracking code
         );
 
-        sUSD.approve(address(aggregationRouterV3), sUSDAmountOut);
+        sUSD.approve(address(aggregationRouterV4), sUSDAmountOut);
 
         // Make sure to set destReceiver to caller
-        (bool success, bytes memory returnData) = aggregationRouterV3.call(_data);
+        (bool success, bytes memory returnData) = aggregationRouterV4.call(_data);
         require(success, _getRevertMsg(returnData));
         (uint amountReceived,) = abi.decode(returnData, (uint, uint));
         
